@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f8f9fb" />
+    <meta
+      name="description"
+      content="A simple AI chat workspace using a free, anonymous Pollinations model."
+    />
+    <title>Orbit — AI chat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar" aria-label="Chat history">
+        <div class="sidebar-top">
+          <a class="brand" href="#" aria-label="Orbit home">
+            <span class="brand-mark" aria-hidden="true">
+              <svg viewBox="0 0 32 32" fill="none">
+                <circle cx="16" cy="16" r="10.5" stroke="currentColor" stroke-width="2.2" />
+                <ellipse cx="16" cy="16" rx="14" ry="5.5" transform="rotate(-38 16 16)" stroke="currentColor" stroke-width="2.2" />
+                <circle cx="23.5" cy="8.5" r="2.3" fill="currentColor" />
+              </svg>
+            </span>
+            <span>orbit<span class="brand-period">.</span></span>
+          </a>
+          <button class="icon-button sidebar-close" id="sidebarClose" type="button" aria-label="Close sidebar">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
+          </button>
+        </div>
+
+        <button class="new-chat-button" id="newChat" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
+          <span>New chat</span>
+          <span class="shortcut">⌘ K</span>
+        </button>
+
+        <div class="history-heading">YOUR CHATS</div>
+        <nav class="chat-list" id="chatList" aria-label="Recent chats"></nav>
+
+        <div class="sidebar-bottom">
+          <div class="free-plan">
+            <span class="free-plan-icon" aria-hidden="true">✦</span>
+            <div>
+              <strong>No-login AI</strong>
+              <span>Pollinations · GPT-OSS 20B</span>
+            </div>
+            <span class="online-dot" title="Free anonymous API"></span>
+          </div>
+          <button class="profile-button" id="openSettings" type="button">
+            <span class="avatar">O</span>
+            <span class="profile-copy"><strong>About free AI</strong><span>No account or API key</span></span>
+            <svg class="profile-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+          </button>
+        </div>
+      </aside>
+
+      <div class="sidebar-scrim" id="sidebarScrim"></div>
+
+      <main class="main-panel">
+        <header class="topbar">
+          <div class="topbar-left">
+            <button class="icon-button mobile-menu" id="menuButton" type="button" aria-label="Open chat history">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+            </button>
+            <div class="model-picker" aria-label="AI model">
+              <span class="model-sparkle" aria-hidden="true">✦</span>
+              <span class="model-name">GPT-OSS 20B</span>
+              <span class="free-pill">FREE</span>
+            </div>
+          </div>
+          <div class="topbar-right">
+            <span class="connection-status" id="connectionStatus"><span class="status-dot"></span><span id="statusText">Connecting</span></span>
+            <button class="icon-button settings-top-button" id="topSettings" type="button" aria-label="Open AI settings" title="AI settings">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z" /><path d="m19.4 15 .1.1a1.8 1.8 0 0 1-2.5 2.5l-.1-.1a1.8 1.8 0 0 0-3 .9v.2a1.8 1.8 0 0 1-3.6 0v-.2a1.8 1.8 0 0 0-3-.9l-.1.1a1.8 1.8 0 0 1-2.5-2.5l.1-.1a1.8 1.8 0 0 0-.9-3h-.2a1.8 1.8 0 0 1 0-3.6h.2a1.8 1.8 0 0 0 .9-3l-.1-.1a1.8 1.8 0 0 1 2.5-2.5l.1.1a1.8 1.8 0 0 0 3-.9v-.2a1.8 1.8 0 0 1 3.6 0v.2a1.8 1.8 0 0 0 3 .9l.1-.1a1.8 1.8 0 0 1 2.5 2.5l-.1.1a1.8 1.8 0 0 0 .9 3h.2a1.8 1.8 0 0 1 0 3.6h-.2a1.8 1.8 0 0 0-.9 3Z" /></svg>
+            </button>
+          </div>
+        </header>
+
+        <section class="conversation" id="conversation" aria-live="polite">
+          <div class="welcome" id="welcome">
+            <div class="welcome-orbit" aria-hidden="true">
+              <span class="orbit-ring orbit-ring-one"></span>
+              <span class="orbit-ring orbit-ring-two"></span>
+              <span class="orbit-core"><svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="10.5" stroke="currentColor" stroke-width="2.2" /><ellipse cx="16" cy="16" rx="14" ry="5.5" transform="rotate(-38 16 16)" stroke="currentColor" stroke-width="2.2" /><circle cx="23.5" cy="8.5" r="2.3" fill="currentColor" /></svg></span>
+              <span class="orbit-star orbit-star-one">✦</span>
+              <span class="orbit-star orbit-star-two">✧</span>
+            </div>
+            <p class="welcome-eyebrow">YOUR THINKING SPACE</p>
+            <h1>A little help goes<br />a <span>long way.</span></h1>
+            <p class="welcome-description">Ask anything, explore an idea, or drop in a file.<br class="desktop-break" /> Your next thought starts here.</p>
+            <div class="suggestion-grid">
+              <button class="suggestion-card" type="button" data-prompt="Help me plan a productive week that leaves room to recharge.">
+                <span class="suggestion-icon lavender">✦</span>
+                <span><strong>Plan my week</strong><small>Make a little room to breathe</small></span>
+                <span class="suggestion-arrow" aria-hidden="true">↗</span>
+              </button>
+              <button class="suggestion-card" type="button" data-prompt="Explain a tricky concept in simple terms, with a helpful example.">
+                <span class="suggestion-icon peach">⌘</span>
+                <span><strong>Explain something</strong><small>Make the complex feel simple</small></span>
+                <span class="suggestion-arrow" aria-hidden="true">↗</span>
+              </button>
+              <button class="suggestion-card" type="button" data-prompt="Give me five creative ideas for a project I could start this weekend.">
+                <span class="suggestion-icon mint">✳</span>
+                <span><strong>Find inspiration</strong><small>Start with a spark of an idea</small></span>
+                <span class="suggestion-arrow" aria-hidden="true">↗</span>
+              </button>
+              <button class="suggestion-card" type="button" data-prompt="Help me write a clear, friendly message about something important.">
+                <span class="suggestion-icon butter">Aa</span>
+                <span><strong>Write it together</strong><small>Find just the right words</small></span>
+                <span class="suggestion-arrow" aria-hidden="true">↗</span>
+              </button>
+            </div>
+          </div>
+          <div class="messages" id="messages"></div>
+        </section>
+
+        <footer class="composer-area">
+          <form class="composer" id="chatForm">
+            <div class="attachment-list" id="attachmentList" aria-live="polite"></div>
+            <textarea id="messageInput" rows="1" placeholder="Message Orbit…" aria-label="Message Orbit" maxlength="12000"></textarea>
+            <div class="token-usage" aria-label="Estimated model context usage">
+              <div class="token-usage-heading">
+                <span>Context usage <span class="token-estimate-note">(estimated)</span></span>
+                <span id="tokenUsageLabel">~0 / 131,072 tokens</span>
+              </div>
+              <div id="tokenUsage" class="token-usage-track" role="progressbar" aria-label="Estimated context tokens used" aria-valuemin="0" aria-valuemax="131072" aria-valuenow="0">
+                <span id="tokenMeter" class="token-usage-fill"></span>
+              </div>
+              <div class="token-usage-foot">
+                <span id="tokenAvailable">~129,872 available</span>
+                <span>1,200 reserved for reply</span>
+              </div>
+            </div>
+            <div class="composer-bottom">
+              <div class="composer-tools">
+                <input id="fileInput" type="file" hidden multiple accept=".txt,.md,.csv,.json,.xml,.yaml,.yml,.html,.css,.js,.ts,.py,.java,.c,.cpp,.h,.sql,.log,.sh,.rs,.go,.php,.rb,.jsx,.tsx,.toml,.pdf" />
+                <button class="tool-button" id="attachButton" type="button" title="Attach files" aria-label="Attach files">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 12.5 6.6-6.6a3.2 3.2 0 0 1 4.5 4.5L10 19.5a5 5 0 0 1-7.1-7.1L12 3.3" /></svg>
+                  <span>Attach files</span>
+                </button>
+                <span class="attachment-hint">Text + PDFs · up to 5</span>
+              </div>
+              <div class="composer-actions">
+                <span class="enter-hint">↵ to send</span>
+                <button class="send-button" id="sendButton" type="submit" aria-label="Send message" title="Send message">
+                  <svg class="send-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 14-7-4.5 14-3-5-6.5-2Z" /><path d="m11.5 14 4-4" /></svg>
+                  <svg class="stop-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="2" /></svg>
+                </button>
+              </div>
+            </div>
+          </form>
+          <p class="disclaimer">Orbit can make mistakes. Check important information. <span>Messages are sent to Pollinations.</span></p>
+        </footer>
+      </main>
+    </div>
+
+    <div class="modal-backdrop" id="settingsModal" hidden>
+      <section class="settings-modal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+        <div class="modal-heading">
+          <div>
+            <span class="modal-icon">✦</span>
+            <p class="welcome-eyebrow">NO ACCOUNT REQUIRED</p>
+            <h2 id="settingsTitle">About free AI.</h2>
+          </div>
+          <button class="icon-button" id="closeSettings" type="button" aria-label="Close settings">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
+          </button>
+        </div>
+        <p class="settings-intro">Orbit uses Pollinations Classic, which serves GPT-OSS 20B for free without an account, login, or API key.</p>
+        <div class="privacy-note"><span aria-hidden="true">◎</span><span>Messages and extracted text from text/PDF attachments are sent to Pollinations. Weather questions use Open-Meteo; your chosen city or browser-approved location is sent there to retrieve forecasts.</span></div>
+        <p class="settings-intro">Anonymous use is limited to one text request every 30 seconds per IP address. This limit is shared by people on the same network.</p>
+        <p class="token-limit-note">The token meter estimates the active chat’s context from text length; it is not exact tokenizer or API usage. The model context window is 131,072 tokens, but Pollinations may enforce different limits. The request rate limit is separate.</p>
+        <div class="modal-actions">
+          <a class="key-help" href="https://github.com/pollinations/pollinations/blob/master/APIDOCS.md" target="_blank" rel="noopener noreferrer">API and privacy details <span aria-hidden="true">↗</span></a>
+          <button class="primary-button" id="cancelSettings" type="button">Got it</button>
+        </div>
+      </section>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
